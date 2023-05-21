@@ -1,0 +1,16 @@
+@font-face {
+    font-family: "roboto";
+    src: url(/src/assets/fonts/Roboto-Light.ttf);
+}
+@font-face {
+    font-family: "roboto-medium";
+    src: url(/src/assets/fonts/Roboto-Medium.ttf);
+}
+@font-face {
+    font-family: "oxygen";
+    src: url(/src/assets/fonts/Oxygen.ttf);
+}
+@font-face {
+    font-family: "ptserif";
+    src: url(/src/assets/fonts/PTSerif.ttf);
+}

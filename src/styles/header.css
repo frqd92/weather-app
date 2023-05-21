@@ -1,0 +1,130 @@
+header{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 50px;
+
+}
+
+/* input */
+#input-container{
+    position: relative;
+    grid-column: 2 / 3;
+    align-self: center;
+    width: calc(30vw + 200px);
+
+}
+#search-input{
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-bottom: 1px solid rgb(156, 153, 153) ;
+    outline: none;
+    font-size: 1.1rem;
+    min-width: 200px;
+    padding: 5px 0px;
+    padding-top: 15px;
+    width: 100%;
+
+}
+.search-results-container{
+    position: absolute;
+    max-height: 0px;
+    border: none;
+    width: 100%;
+    transition: all 0.24s linear;
+    overflow: hidden;
+}
+.search-results-show{
+    max-height: 300px;
+    border: 1px solid black;
+    border-top: none;
+    overflow-y: auto;
+}
+
+.search-results-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.search-row-cont{
+    display: flex;
+    padding: 10px;
+    gap: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.152);
+    transition: background-color 0.07s linear;
+    cursor: pointer;
+}
+.search-row-cont:last-child{
+    border-bottom: none;
+}
+.search-row-cont:hover{
+    background-color: rgba(0, 8, 84, 0.302);
+}
+.search-row-cont p{
+
+    display: flex;
+    align-items: center;
+}
+.search-row-cont p:nth-child(1){
+    white-space: nowrap;
+    font-family: roboto;
+
+}
+.search-row-cont p:nth-child(2){
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    font-family: roboto-medium;
+    color: rgb(71, 70, 70);
+    font-size: 80%;
+}
+/* unit toggle */
+#temp-unit-toggle-container{
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    user-select: none;
+    -webkit-user-select: none;
+    font-family: oxygen;
+    border: 1px solid rgba(0, 0, 0, 0.407);
+    border-radius: 15px;
+    width: 80px;
+    overflow: hidden;
+    justify-self: end;
+
+    grid-column: 3 / 4;
+}
+.unit-choice-div{
+    position: absolute;
+    width: 105%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.unit-choice{
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    transform: skew(-20deg);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+
+}
+.chosen-unit{
+    background-color: rgba(0, 0, 0, 0.144);
+    opacity: 1;
+}
+
+#temp-unit-toggle-container p{
+    color: rgb(0, 0, 0);
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
