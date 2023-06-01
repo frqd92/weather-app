@@ -2,7 +2,7 @@ import { elementCreator, imageCreator } from "../utils/elementCreator";
 import { changeCityChoice, globalUnit } from "../state";
 import '/src/renderElements/cityHeader.css'
 import '/src/renderElements/currentWeather.css'
-
+import '/src/renderElements/contentBox.css'
 
 export async function fetchData(location){
     const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${location}&days=3`;
@@ -26,10 +26,57 @@ function renderCity(data){
     mainCont.querySelectorAll("div").forEach(elem=>elem.remove())
     const cityInfoContainer = createCityHeader(data, mainCont);
     const cityCurrentWeatherContainer = createCurrentCityWeather(data, mainCont)
+    const moreOptions = contentBoxFact("more options", mainCont);
+    fillOptions(moreOptions);
+
+    const weeklyTemps = contentBoxFact("weekly weather view", mainCont)
 }
 
-function contentBoxFact(text){
-    const mainDiv = elementCreator("div", ["class", "content-box", `content-box-${text.split(" ")[0]}`], false, false);
+
+
+function fillOptions(parent){
+    const contentBox = parent.querySelector(".content-box-content");
+    const mainDiv = elementCreator("div", ["class", "more-options-div"], "jdfkljfd\nklfdsfsfdsfdsfds\nfdsfdsfds\nsfjdslkf", contentBox)
+}
+
+
+
+function contentBoxFact(text, parent){
+    const classN = text.split(" ")[0];
+    const mainDiv = elementCreator("div", ["class", "content-box", `content-box-${classN}`], false, parent);
+    const showHideBtnDiv = elementCreator("div", ["class", "show-hide-div"], false, mainDiv);
+    let isShow = JSON.parse(localStorage.getItem(`${classN}-menu`)=== "true");
+    const btnText = elementCreator("p", false, false, showHideBtnDiv);
+    const arrow = elementCreator("span", false, "<", showHideBtnDiv);
+    const contentDiv = elementCreator("div", ["class", "content-box-content"], false, mainDiv)
+    checkMenuStatus()
+    
+    showHideBtnDiv.addEventListener("click", showHideBtnFunc)
+
+    function showHideBtnFunc(){
+        if(contentDiv.className.includes("shown")){
+            isShow=false;
+            contentDiv.classList.remove("content-shown")
+            contentDiv.classList.add("content-hidden")
+        }
+        else{
+            isShow=true;
+            contentDiv.classList.remove("content-hidden")
+            contentDiv.classList.add("content-shown")
+        }
+        localStorage.setItem(`${classN}-menu`, isShow);
+        checkMenuStatus();
+    }
+    function checkMenuStatus(){
+        const textPart = isShow?`Hide ${text}`:`Show ${text}`;
+        const contentShow = isShow?"content-shown":"content-hidden"
+        btnText.innerText = textPart;
+        const arrowCl = isShow?"content-box-arrow-shown":"content-box-arrow-hidden";
+        arrow.classList.remove(arrow.classList[0]);
+        arrow.classList.add(arrowCl)
+        contentDiv.classList.remove(contentDiv.classList[1]);
+        contentDiv.classList.add(contentShow)
+    }
     return mainDiv;
 }
 
