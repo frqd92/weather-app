@@ -26,17 +26,44 @@ function renderCity(data){
     mainCont.querySelectorAll("div").forEach(elem=>elem.remove())
     const cityInfoContainer = createCityHeader(data, mainCont);
     const cityCurrentWeatherContainer = createCurrentCityWeather(data, mainCont)
-    const moreOptions = contentBoxFact("more options", mainCont);
-    fillOptions(moreOptions);
+    const moreOptions = contentBoxFact("more information", mainCont);
+    fillOptions(moreOptions, data);
 
-    const weeklyTemps = contentBoxFact("weekly weather view", mainCont)
 }
 
 
 
-function fillOptions(parent){
+function fillOptions(parent, data){
     const contentBox = parent.querySelector(".content-box-content");
-    const mainDiv = elementCreator("div", ["class", "more-options-div"], "jdfkljfd\nklfdsfsfdsfdsfds\nfdsfdsfds\nsfjdslkf", contentBox)
+    const windUnit = globalUnit==="c"?"kph":"mph";
+    const visUnit = globalUnit==="c"?"km":"miles";
+    const mainDiv = elementCreator("div", ["class", "more-information-div"], false, contentBox);
+    //data
+    const maxTemp = data.forecast.forecastday[0].day[`maxtemp_${globalUnit}`]+ " " + globalUnit.toUpperCase() + "°";
+    const minTemp = data.forecast.forecastday[0].day[`mintemp_${globalUnit}`]+ " " + globalUnit.toUpperCase() + "°";
+    const humidity = data.current.humidity + "%";
+    const windDirection = data.current.wind_dir;
+    const windSpeed = windDirection + " " + data.current[`wind_${windUnit}`] + " " + windUnit;
+    const windGust = data.current[`gust_${windUnit}`] + " " + windUnit;
+    const rainChance = data.forecast.forecastday[0].day.daily_chance_of_rain + "%";
+    const snowChance = data.forecast.forecastday[0].day.daily_chance_of_snow + "%";
+    const visibility = data.current[`vis_${visUnit}`] + " " + visUnit;
+
+    const uvIndex = data.current.uv;
+    const pressure = data.current.pressure_mb + " mb";
+    const contentArr = [maxTemp, minTemp, windSpeed, windGust,  rainChance, snowChance, humidity, visibility, uvIndex, pressure];
+    const labels = ["Max temperature", "Min temperature", "Wind speed", "Wind gust",  "Chance of rain", "Chance of snow","Humidity", "Visibility", "UV index", "Pressure"]
+
+    //elements
+    for(let i=0;i<contentArr.length;i++){
+        const container = elementCreator("div", ["class", "content-container"], false, mainDiv);
+        elementCreator("p", false, labels[i], container);
+        elementCreator("p", false, contentArr[i], container)
+    }
+
+
+
+
 }
 
 

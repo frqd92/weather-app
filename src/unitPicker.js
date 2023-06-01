@@ -18,7 +18,6 @@ function checkLocalStorageForUnit(){
 function chooseUnitClick(){
     const unitChoice = this.className.includes("celsius")?"c":"f";
     changeGlobalUnit(unitChoice);
-    console.log(globalUnit);
     localStorage.setItem("unit", unitChoice);
     applyChosenUnit(unitChoice);
     rerenderPage()
