@@ -1,9 +1,18 @@
+import { fetchData } from "./renderElements/renderCity";
 import { elementCreator } from "./utils/elementCreator";
 const resultsCont = document.querySelector(".search-results-container")
 
 export function searchFunc(){
     const input = document.getElementById("search-input");
     input.addEventListener("input", inputSearch);
+    input.addEventListener("keydown", inputValidate)
+}
+
+function inputValidate(e){
+    if(e.code==="Enter" && this.value.length>0){
+        fetchData(this.value)
+        closeInput()
+    }
 }
 
 function inputSearch(){
@@ -11,13 +20,20 @@ function inputSearch(){
     if(this.value.length>0){
         resultsCont.classList.add("search-results-show")
         const resultPromise = searchCitiesCountries(this.value);
-        
     }
     else{
         resultsCont.classList.remove("search-results-show")
-
     }
 }
+function closeInput(){
+    const input = document.getElementById("search-input");
+    input.value = "";
+    resultsCont.classList.remove("search-results-show")
+
+}
+
+
+
 async function searchCitiesCountries(inputValue){
     inputValue = formatSearchInput(inputValue)
     try{
@@ -50,5 +66,9 @@ function searchRowFact(val){
     const city = elementCreator("p", false, val.city + ",", container)
     const country = elementCreator("p", false, val.country, container)
     
+    container.addEventListener("click", ()=>{
+        fetchData(val.city);
+        closeInput();
+    })
     return container;
 }

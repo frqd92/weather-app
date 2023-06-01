@@ -3,28 +3,24 @@ import { searchFunc } from './searchbar';
 import '/src/main.css'
 import '/src/styles/header.css'
 import '/src/assets/fonts/fonts.css'
+import { fetchData } from './renderElements/renderCity';
+import { elementCreator } from './utils/elementCreator';
 
 
 (()=>{
     unitPick();
     searchFunc();
+    checkCityLocalStorage();
+    const mainData = elementCreator("main", false, false, document.body);
+
 })();
 
-
-
-function fetchData(location){
-    const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${location}&days=3`;
-    
-
-    fetch(apiUrl)
-    .then(response=>{
-        return response.json();
-    })
-    .then(data=>{
-        console.log(data);
-    })
-    .catch(error=>{console.log(error);})
+function checkCityLocalStorage(){
+    const cityLocal = localStorage.getItem("city-choice");
+    const choice = cityLocal===null?"Lisbon":cityLocal;
+    localStorage.setItem("city-choice", choice);
+    fetchData(choice);
 }
 
- 
+
 

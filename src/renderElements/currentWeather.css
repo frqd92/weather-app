@@ -1,0 +1,148 @@
+.current-weather-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+/* current weather */
+.current-weather-cont{
+    display: flex;
+    justify-content: center;
+
+
+}
+.current-weather-div img{
+    width: 100px;
+    opacity: 0.5;
+    left: -70px;
+    top: 0;
+    
+}
+.current-weather-part{
+    display: grid;
+    column-gap: 8px;
+}
+.current-weather-unit{
+    display: flex;
+    font-size: 220%;
+    font-family: ptserif;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+.current-weather-part > p:nth-child(2){
+    font-family: roboto;
+    font-size: 90%;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    align-self: center;
+}
+.current-weather-part > p:nth-child(3){
+    font-family: roboto;
+    font-size: 120%;
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+
+
+}
+
+/* astro */
+.current-weather-astro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: calc(10vw + 30px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.284);
+
+}
+.sunrise-div, .sunset-div{
+    display: flex;
+    align-items: end;
+    gap: 4px;
+
+}
+.sunrise-div p, .sunset-div p{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 110%;
+    white-space: nowrap;
+}
+
+/* sunrise/sunset icons */
+.astro-main-div{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 60px;
+    height: 50px;
+    overflow: hidden;
+    display: flex;
+
+}
+
+.astro-sun{
+    --sunrise: -60%;
+    --sunset: -50%;
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    border-top:3px solid rgb(230, 153, 76, 0.3);
+    background-color: rgba(238, 179, 83);
+    border-radius: 100%;
+    box-shadow: 0px 0px 5px rgb(103, 93, 0);
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+.astro-sun-sunrise{
+    animation: sunAnimRise 4s ease-in-out infinite;
+    margin-bottom: 3px;
+
+}
+.astro-sun-sunset{
+    animation: sunAnimSet 4s ease-in-out infinite;
+    margin-bottom: 7px;
+
+}
+@keyframes sunAnimRise {
+    0%{ bottom: var(--sunrise); }
+    50%{ bottom: -40%; }
+    100%{ bottom: var(--sunrise); }
+}
+@keyframes sunAnimSet {
+    0%{ bottom: var(--sunset); }
+    50%{ bottom: -70%; }
+    100%{ bottom: var(--sunset); }
+}
+.astro-sun-arrow{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(114, 113, 113, 0.8);
+}
+.astro-sun-arrow-sunrise{
+    transform: rotate(-90deg);
+    animation: arrowAnimRise 4s ease-in-out infinite;
+}
+.astro-sun-arrow-sunset{
+    transform: rotate(90deg);
+    animation: arrowAnimSet 4s ease-in-out infinite;
+
+}
+@keyframes arrowAnimRise {
+    0%{font-size: 90%;}
+    50%{font-size: 130%;}
+    100%{font-size: 90%;}
+}
+@keyframes arrowAnimSet{
+    0%{font-size: 130%;}
+    50%{font-size: 90%;}
+    100%{font-size: 130%;}
+}
