@@ -26,12 +26,13 @@ function renderCity(data){
     mainCont.querySelectorAll("div").forEach(elem=>elem.remove())
     const cityInfoContainer = createCityHeader(data, mainCont);
     const cityCurrentWeatherContainer = createCurrentCityWeather(data, mainCont)
-
+    
+    const hourlyBox = contentBoxFact("hourly weather", mainCont);
+    fillHourly(hourlyBox, data);
     const moreInfo = contentBoxFact("more information", mainCont);
     fillInfo(moreInfo, data);
 
-    const hourlyBox = contentBoxFact("hourly weather", mainCont);
-    fillHourly(hourlyBox, data);
+
 
 }
 

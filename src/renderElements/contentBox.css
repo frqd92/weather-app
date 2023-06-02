@@ -1,27 +1,32 @@
-.content-box{
 
-
-}
 .content-box:nth-child(3){
-    border-top: 1px solid rgba(0, 0, 0, 0.158);
+    margin-bottom: 2%;
 }
 .content-box-more{
     display: flex;
     flex-direction: column;
-    padding: 0px 10%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.158);
+
 
 }
 .show-hide-div{
-   
+    align-self: flex-start;
     display: flex;
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
-    justify-content: center;
-    padding: 10px 0px;
-}
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 10px;
+    width: 210px;
+    border: 1px solid rgba(0, 0, 0, 0.17);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 
+
+}
+.show-hide-div:active{
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}
 .show-hide-div p{
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -30,7 +35,7 @@
 /* arrow */
 .show-hide-div span{
     transition: 0.14s linear transform;
-
+    font-weight: 900;
 }
 .content-box-arrow-hidden{
     transform: none;
@@ -43,6 +48,8 @@
 
 
 /* More information box */
+
+
 .more-information-div{
     display: grid;
     justify-content: center;
@@ -84,12 +91,16 @@
 
 /* hourly */
 .content-box-hourly{
-
+    display: flex;
+    flex-direction: column;
 }
 .hourly-cont{
     display: flex;
     justify-content: space-evenly;
     align-items: stretch;
+}
+.content-box-hourly .show-hide-div{
+    align-self:flex-start;
 
 }
 

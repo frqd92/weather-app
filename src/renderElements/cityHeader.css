@@ -2,6 +2,9 @@
 .city-info-cont{
     display: grid;
     padding: 5px 10%;
+    margin: 2% 0% 8% 0%;
+
+   
 }
 
 .city-info-cont h1{
@@ -9,7 +12,6 @@
     grid-row: 1 / 2;
     font-family: arial;
     justify-self: center;
-
 }
 .city-info-cont h2{
     grid-column: 2 / 3;
