@@ -5,7 +5,7 @@ import '/src/renderElements/currentWeather.css'
 import '/src/renderElements/contentBox.css'
 
 export async function fetchData(location){
-    const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${location}&days=3`;
+    const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${location}&days=7`;
    try{
         const weatherApi = await fetch(apiUrl);
         const weatherData = await weatherApi.json();
@@ -26,14 +26,64 @@ function renderCity(data){
     mainCont.querySelectorAll("div").forEach(elem=>elem.remove())
     const cityInfoContainer = createCityHeader(data, mainCont);
     const cityCurrentWeatherContainer = createCurrentCityWeather(data, mainCont)
-    const moreOptions = contentBoxFact("more information", mainCont);
-    fillOptions(moreOptions, data);
+
+    const moreInfo = contentBoxFact("more information", mainCont);
+    fillInfo(moreInfo, data);
+
+    const hourlyBox = contentBoxFact("hourly weather", mainCont);
+    fillHourly(hourlyBox, data);
+
+}
+
+
+function fillHourly(parent, data){
+    const contentBox = parent.querySelector(".content-box-content");
+    const hourlyContainer = elementCreator("div", ["class", "hourly-cont"], false, contentBox);
+    const leftArrow = elementCreator("div", ["class", "hourly-arrow"], "<", hourlyContainer);
+    const squaresContainer = elementCreator("div", ["class", "hourly-squares-cont"], false, hourlyContainer);
+    const rightArrow = elementCreator("div", ["class", "hourly-arrow"], ">", hourlyContainer);
+    const currentHour = Number(document.querySelector(".time-cont").innerText.split(":")[0])
+    leftArrow.addEventListener("click", scrollCont);
+    rightArrow.addEventListener("click", scrollCont);
+    function scrollCont(){
+        const scrollFactor = this.innerText===">"?1:-1;
+        const scrollVal = squaresContainer.scrollLeft;
+        squaresContainer.scrollLeft = scrollVal + (950*scrollFactor);
+    }
+
+    //data
+    const hourArr = data.forecast.forecastday[0].hour;
+  
+    hourArr.forEach(hour=>{
+        const time = hour.time.split(" ")[1];
+        const icon = hour.condition.icon;
+        const tempDesc = hour.condition.text;
+        const temp = hour[`temp_${globalUnit}`];
+        hourlyFact(time,icon,tempDesc, temp)
+    })
+
+    function hourlyFact(time, icon, tempDesc, temp){
+        const mainDiv = elementCreator("div", ["class", "hourly-square"], false, squaresContainer);
+        const timeElem = elementCreator("span", false, time, mainDiv);
+        const iconImg = imageCreator(icon, false, mainDiv);
+        const tempElem = elementCreator("span", false, `${temp} °${globalUnit.toUpperCase()}`, mainDiv);
+        const textDescElem = elementCreator("span", false, tempDesc, mainDiv);
+        const squareHour = Number(time.split(":")[0])
+        if(squareHour===currentHour){
+            mainDiv.scrollIntoView({ behavior: "smooth", inline: "center" });
+            mainDiv.classList.add("today-square")
+        }
+        
+    }
+
+
+
 
 }
 
 
 
-function fillOptions(parent, data){
+function fillInfo(parent, data){
     const contentBox = parent.querySelector(".content-box-content");
     const windUnit = globalUnit==="c"?"kph":"mph";
     const visUnit = globalUnit==="c"?"km":"miles";

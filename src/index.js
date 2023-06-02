@@ -28,7 +28,9 @@ function checkMenus(){
     const menuOptions = ["more", "hourly", "weekly"];
     menuOptions.forEach((option, index)=>{
         if(localStorage.getItem(`${option}-menu`)===null){
-            localStorage.setItem(`${option}-menu`, true)
+            let bool = true;
+            if(index===0) bool = false;
+            localStorage.setItem(`${option}-menu`, bool)
         }
     })
 }
