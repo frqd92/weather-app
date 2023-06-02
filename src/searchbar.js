@@ -19,7 +19,7 @@ function inputSearch(){
     resultsCont.querySelectorAll("div").forEach(child=>child.remove())
     if(this.value.length>0){
         resultsCont.classList.add("search-results-show")
-        const resultPromise = searchCitiesCountries(this.value);
+        const resultPromise = searchCitiesCountry(this.value);
     }
     else{
         resultsCont.classList.remove("search-results-show")
@@ -32,7 +32,25 @@ function closeInput(){
 
 }
 
+async function searchCitiesCountry(inputValue){
+    inputValue = formatSearchInput(inputValue)
+    try{
+        const fetchValue = await fetch(`http://geodb-free-service.wirefreethought.com/v1/geo/places?limit=10&offset=0&namePrefix=${inputValue}&sort=-population,name`, {
+            method: 'GET',
+          });
+        
+        const fetchJson = await fetchValue.json();
+          console.log(fetchJson);
 
+          
+        const foundValues = fetchJson.data.filter((value, index)=>{
+            
+        })
+
+
+    }
+    catch (error){}
+}
 
 async function searchCitiesCountries(inputValue){
     inputValue = formatSearchInput(inputValue)

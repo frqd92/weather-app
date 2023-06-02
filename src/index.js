@@ -6,6 +6,29 @@ import '/src/assets/fonts/fonts.css'
 import { fetchData } from './renderElements/renderCity';
 import { elementCreator } from './utils/elementCreator';
 
+countryApi()
+
+async function countryApi(){
+
+    try{
+        const fetchValue = await fetch('http://geodb-free-service.wirefreethought.com/v1/geo/places?limit=10&offset=0', {
+            method: 'GET',
+          });
+        
+        const fetchJson = await fetchValue.json();
+          console.log(fetchJson);
+
+          
+        const foundValues = fetchJson.data.filter((value, index)=>{
+            
+        })
+
+
+    }
+    catch (error){}
+}
+
+
 
 (()=>{
     unitPick();
