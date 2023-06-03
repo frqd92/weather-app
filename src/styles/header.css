@@ -33,6 +33,14 @@ header{
     width: 100%;
     transition: all 0.24s linear;
     overflow: hidden;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+     -webkit-backdrop-filter: blur(10px);
+}
+.result-child-cont{
+    overflow-y: auto;
+
 }
 .search-results-show{
     max-height: 400px;
@@ -55,9 +63,7 @@ header{
     border-bottom: 1px solid rgba(0, 0, 0, 0.152);
     transition: background-color 0.07s linear;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.634);
-    backdrop-filter: blur(10px);
-     -webkit-backdrop-filter: blur(10px);
+
 }
 .search-row-cont:last-child{
     border-bottom: none;
@@ -83,6 +89,13 @@ header{
     font-family: roboto-medium;
     color: rgb(71, 70, 70);
     font-size: 80%;
+    flex-grow: 1;
+}
+
+.search-row-weather{
+    text-align: end;
+    font-family: arial;
+    width: 60px;
 }
 /* unit toggle */
 #temp-unit-toggle-container{

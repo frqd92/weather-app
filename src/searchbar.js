@@ -1,4 +1,5 @@
 import { fetchData } from "./renderElements/renderCity";
+import { globalUnit } from "./state";
 import { elementCreator } from "./utils/elementCreator";
 const resultsCont = document.querySelector(".search-results-container")
 
@@ -16,35 +17,29 @@ function inputValidate(e){
 }
 
 function inputSearch(){
-    resultsCont.querySelectorAll("div").forEach(child=>child.remove())
     if(this.value.length>0){
-        resultsCont.classList.add("search-results-show")
-        const resultPromise = searchCitiesCountry(this.value);
+        resultsCont.classList.add("search-results-show");
+        const resultPromise = searchCitiesCountry(this.value)
+
     }
     else{
         resultsCont.classList.remove("search-results-show")
+        document.querySelector(".result-child-cont").remove()
     }
 }
-function closeInput(){
-    const input = document.getElementById("search-input");
-    input.value = "";
-    resultsCont.classList.remove("search-results-show")
 
-}
 
 async function searchCitiesCountry(inputValue){
-    inputValue = formatSearchInput(inputValue)
     try{
         const fetchValue = await fetch(`http://geodb-free-service.wirefreethought.com/v1/geo/places?limit=10&offset=0&namePrefix=${inputValue}&sort=-population,name`, {
             method: 'GET',
           });
         
-        const fetchJson = await fetchValue.json();
-          console.log(fetchJson);
-
-          
-        const foundValues = fetchJson.data.filter((value, index)=>{
-            
+        const fetchJSON = await fetchValue.json();
+        const placeArr = fetchJSON.data;
+        const parentCont = resultsContFunc()
+        placeArr.forEach(place=>{
+            searchRowFact(place.name, place.country, parentCont)
         })
 
 
@@ -52,41 +47,59 @@ async function searchCitiesCountry(inputValue){
     catch (error){}
 }
 
-async function searchCitiesCountries(inputValue){
-    inputValue = formatSearchInput(inputValue)
+function resultsContFunc(){
+    if(document.querySelector(".result-child-cont")!==null){
+        document.querySelector(".result-child-cont").remove()
+    }
+    return elementCreator("div", ["class", "result-child-cont"], false, resultsCont)
+}
+async function searchRowFact(city, country, parentCont){
+    const container = elementCreator("div", ["class", "search-row-cont"], false, parentCont )
+    const cityElem = elementCreator("p", false, city + ",", container)
+    const countryElem = elementCreator("p", false, country, container)
+
+    container.addEventListener("click", ()=>{
+        fetchData(city);
+        closeInput();
+    })
     try{
-        const fetchValue = await fetch('https://countriesnow.space/api/v0.1/countries/population/cities/')
-        const fetchJson = await fetchValue.json();
-        const foundValues = fetchJson.data.filter((value, index)=>{
-            const cityCountry = value.city + " " + value.country;
-            const countryCity = value.country + " " + value.city;
-            if(formatSearchInput(cityCountry).includes(inputValue) || formatSearchInput(countryCity).includes(inputValue)){
-                if(value.city==="based" || value.city==="null" ) return
-                return value
-            }
-        }).slice(-20)
-        foundValues.forEach(val=>{
-            const row = searchRowFact(val);
-        })
-        if(foundValues.length<1){
-            throw new Error("No values found...")
-        }
+        const cityWeatherObj = await searchMenuWeather(cityElem.innerText);
+        let cityWeather = cityWeatherObj.current[`temp_${globalUnit}`];
+        cityWeather = !cityWeather.toString().includes(".")?cityWeather+".0":cityWeather;
+        const weatherElem = elementCreator("div", ["class", "search-row-weather"], cityWeather + "°" +globalUnit.toUpperCase() , container)
+    
     }
-    catch (error){}
+    catch(error){
+
+    }
+
+    return container;
 }
+
+async function searchMenuWeather(city){
+    const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${city}&days=7`;
+    try{
+        const fetchObj = await fetch(apiUrl)
+        return await fetchObj.json();
+    }
+    catch(error){
+
+    }
+}
+
+
+
+function closeInput(){
+    const input = document.getElementById("search-input");
+    input.value = "";
+    resultsCont.classList.remove("search-results-show")
+    document.querySelector(".result-child-cont").remove()
+
+}
+
+
 
 function formatSearchInput(val){
     return val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replaceAll(/[\s]/g, "");
 }
 
-function searchRowFact(val){
-    const container = elementCreator("div", ["class", "search-row-cont"], false, resultsCont )
-    const city = elementCreator("p", false, val.city + ",", container)
-    const country = elementCreator("p", false, val.country, container)
-    
-    container.addEventListener("click", ()=>{
-        fetchData(val.city);
-        closeInput();
-    })
-    return container;
-}
