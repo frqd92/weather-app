@@ -1,25 +1,52 @@
 import { elementCreator, imageCreator } from "../utils/elementCreator";
-import { changeCityChoice, globalUnit } from "../state";
+import { bookmarkArr, changeCityChoice, globalUnit, writeBookmarked } from "../state";
 import '/src/renderElements/cityHeader.css'
 import '/src/renderElements/currentWeather.css'
 import '/src/renderElements/contentBox.css'
+import bookmark from '/src/assets/bookmark.svg'
 
 export async function fetchData(location){
     const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${location}&days=7`;
    try{
+        displayLoader(true)
         const weatherApi = await fetch(apiUrl);
         const weatherData = await weatherApi.json();
+        displayLoader(false)
         renderCity(weatherData)
         changeCityChoice(location)
    }
    catch (error){
-        console.log(error);
-        console.log("Location not found");
+        fetchData(localStorage.getItem("city-choice"));
+        noLocation(location)
    }
    
 
 }
+function displayLoader(bool){
+    if(bool){
+        const loaderCont = elementCreator("div", ["class", "loader-bg"], false, document.body);
+        const loader = elementCreator("div", ["class", "lds-ring"], false, loaderCont);
+        loader.innerHTML = '<div></div><div></div><div></div><div></div>'
+    }
+    else{
+        document.querySelector(".loader-bg").remove()
+    }
+}
 
+function noLocation(invalidLocation){
+    if(document.querySelector(".input-error-div")!==null) return;
+    const inputContainer = document.getElementById("input-container");
+    const errorDiv = elementCreator("div", ["class", "input-error-div"], `'${invalidLocation}' not found...`, inputContainer)
+    setTimeout(()=>{
+        errorDiv.style.padding="0px";
+        errorDiv.style.height="0px";
+    },1000)
+    setTimeout(()=>{
+        errorDiv.remove();
+    },1100)
+
+
+}
 
 function renderCity(data){
     const mainCont = document.querySelector("main");
@@ -216,11 +243,43 @@ function createCityHeader(data, mainCont){
     const countryName = data.location.country;
     const [cityDate, cityTime] = data.location.localtime.split(" ");
     const cityInfoCont = elementCreator("div", ["class", "city-info-cont"], false, mainCont)
-
     const cityDateElem = formatDate(cityDate, cityInfoCont);
     const cityNameElem = elementCreator("h1", false, cityName, cityInfoCont);
     const countryNameElem = elementCreator("h2", false, countryName, cityInfoCont);
     const cityTimeElem = formatTime(cityTime, cityInfoCont);
+    const bookmarkDiv = elementCreator("div", ["class", "bookmark-outer-div"], false, cityNameElem)
+    const bookmarkBtn = elementCreator("div", ["class", "bookmark-div"], false, bookmarkDiv)
+    const bookmarkImg = imageCreator(bookmark, ["class", "bookmark-svg"], bookmarkBtn);
+    const checkmark = elementCreator("span", ["class", "bookmark-check"],"✓", bookmarkBtn )
+    checkIfBookmarked();
+
+    function checkIfBookmarked(){
+        const local = localStorage.getItem("bookmarked-cities");
+        if(!localStorage.getItem("bookmarked-cities").includes(cityName)){
+            checkmark.classList.add("check-invisible")
+        }
+        else{
+            bookmarkImg.classList.add("checked-bookmark-svg")
+        }
+    }
+
+
+
+    bookmarkDiv.addEventListener("click", bookmarkCity)
+
+    function bookmarkCity(){
+        if(!bookmarkImg.className.includes("checked-bookmark-svg")){
+            bookmarkImg.classList.add("checked-bookmark-svg")
+            checkmark.classList.remove("check-invisible");
+            writeBookmarked(cityName, true)
+        }
+        else{
+            bookmarkImg.classList.remove("checked-bookmark-svg")
+            checkmark.classList.add("check-invisible")
+            writeBookmarked(cityName, false)
+        }
+
+    }
     return cityInfoCont
 }
 
