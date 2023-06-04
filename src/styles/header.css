@@ -55,6 +55,7 @@ header{
     justify-content: center;
     align-items: center;
     padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: rgba(240, 128, 128, 0.128);
 }
 .bookmarked-row-div{
