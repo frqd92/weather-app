@@ -36,7 +36,6 @@
 
 /* checkbox */
 
-
 .theme-auto{
 
     border-bottom: 1px solid rgba(0, 0, 0, 0.372);
@@ -53,17 +52,32 @@
 .theme-auto:hover{
     background-color: rgba(255, 255, 255, 0.103);
 }
-.theme-auto > div{
-    border: 1px solid black;
-    width: 15px;
-    aspect-ratio: 1 / 1;
-    border-radius: 5px;
-}
-
 .theme-auto > span{
     font-size: 80%;
     font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.theme-auto > div{
+    border: 1px solid black;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    -moz-user-select: none;
+}
+.hide-check{
+    opacity: 0;
+}
+.theme-auto > div > span{/* check inner */
+   
+}
+
+
+
 
 /* slider */
 .slider-cont{

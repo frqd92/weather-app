@@ -9,7 +9,13 @@ export function changeCityChoice(choice){
     cityChoice=choice;
     localStorage.setItem("city-choice", choice )
 }
+// 
+export let themeChoice = false
 
+export function changeTheme(val){
+    themeChoice = val;
+    localStorage.setItem("theme-time", val)
+}
 //----------------------------------------
 export let bookmarkArr = [];
 export function writeBookmarked(city, bool){

@@ -1,17 +1,18 @@
+import { changeTheme } from "../state";
 import { elementCreator, imageCreator } from "../utils/elementCreator";
 import { followMouseHoverText } from "../utils/followMouse";
 import themeIcon from '/src/assets/theme.png'
 import '/src/styles/themePick.css'
-
+let chosenTheme = false;
 export function themeFunc(){
     const themeCont = document.getElementById("theme-container");
     const themeImg = imageCreator(themeIcon, ["id", "theme-icon"], themeCont)
     const themeMenu = elementCreator("div", ["class", "theme-menu"], false, themeCont)
     followMouseHoverText(themeImg, "Background")
-    const autoDiv = elementCreator("div", ["class", "theme-auto"], false, themeMenu);
-    const label = elementCreator("span", false, "AUTO", autoDiv)
-    const checkDiv = elementCreator("div", false, false, autoDiv)
+
+    autoFunc(themeMenu)
     sliderFunc(themeMenu)
+
     themeImg.addEventListener("click", ()=>{
         if(document.querySelector(".city-info-cont")===null) return
         if(!themeMenu.className.includes("theme-menu-show")){
@@ -26,6 +27,37 @@ export function themeFunc(){
     })
 
 }
+function autoFunc(themeMenu){
+    const autoDiv = elementCreator("div", ["class", "theme-auto"], false, themeMenu);
+    const label = elementCreator("span", false, "AUTO", autoDiv)
+    const checkDiv = elementCreator("div", false, false, autoDiv)
+    const innerCheck = elementCreator("span", ["class", "theme-check"], "✓", checkDiv);
+
+    if(localStorage.getItem("theme-time")!==null){
+        innerCheck.classList.add("hide-check")
+    }
+    autoDiv.addEventListener("click", autoSelect)
+
+    function autoSelect(){
+        if(!innerCheck.className.includes("hide-check")){
+            innerCheck.classList.add("hide-check");
+            chosenTheme = false;
+
+        }
+        else{
+            innerCheck.classList.remove("hide-check");
+            findSliderPosition()
+        }
+    }
+}
+
+
+function disableThemeAuto(){
+    document.querySelector(".theme-check").classList.add("hide-check")
+    console.log("fart");
+
+}
+
 
 function sliderFunc(themeMenu){
     const sliderCont = elementCreator("div", ["class", "slider-cont"], false, themeMenu)
@@ -39,7 +71,17 @@ function sliderFunc(themeMenu){
 
     thumb.addEventListener("mouseover", showDisp);
     thumb.addEventListener("mouseleave", hideDisp);
+    sliderCont.addEventListener("mousedown", moveThumbCont)
 
+    function moveThumbCont(e){
+        disableThemeAuto()
+        if(e.target===thumb) return;
+        const sliderTop = sliderCont.getBoundingClientRect().top
+        let pos = Math.floor(e.clientY - sliderTop);
+        thumb.style.top = pos + "px"
+
+
+    }
     function showDisp(){
         if(!thumbTimeDisp.className.includes("slider-time-disp-show")){
             thumbTimeDisp.classList.add("slider-time-disp-show")
@@ -80,6 +122,7 @@ function sliderFunc(themeMenu){
         isDragging = false;
         thumb.style.cursor = 'grab';
         hideDisp()
+        formatForTheme(thumbTimeDisp.innerText)
     }
     
     function drag(e){
@@ -99,7 +142,6 @@ function sliderFunc(themeMenu){
         offsetY = currentY;
         const percentage = Math.floor((((maxThumbY - newY)/maxThumbY)*100));
         const twentyFour = Math.floor((23*percentage)/100);
-        changeTheme(twentyFour)
         showDisp()
     }
 }
@@ -108,19 +150,22 @@ export function findSliderPosition(){
     const pageTime = Number(document.querySelector(".time-cont p").innerText)+1;
     const thumb = document.querySelector(".slider-thumb");
     const sliderCont = document.querySelector(".slider-cont");
-
     const thumbHeight = parseInt(getComputedStyle(thumb).height)
     const sliderContTop = parseInt(getComputedStyle(sliderCont).height)
     const maxThumbHeight = sliderContTop- thumbHeight;
-
     const thumbTop = parseInt(getComputedStyle(thumb).top)
-
     const sliderPos = (maxThumbHeight*pageTime)/23
-
     thumb.style.top = sliderPos + "px";
-
 }
 
-function changeTheme(val){
 
+function formatForTheme(val){
+    if(val.length<1) return;
+    if(val==="midnight") val = 0
+    else if(val==="noon") val = 12;
+    else{
+        if(val.includes("pm")) val = parseInt(val) + 12;
+        else val = parseInt(val)
+    }
+    changeTheme(val)
 }
