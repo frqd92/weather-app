@@ -1,9 +1,10 @@
-import { changeTheme } from "../state";
+import { changeThemeStorage } from "../state";
 import { elementCreator, imageCreator } from "../utils/elementCreator";
 import { followMouseHoverText } from "../utils/followMouse";
 import themeIcon from '/src/assets/theme.png'
 import '/src/styles/themePick.css'
 let chosenTheme = false;
+let themeDragPos;
 export function themeFunc(){
     const themeCont = document.getElementById("theme-container");
     const themeImg = imageCreator(themeIcon, ["id", "theme-icon"], themeCont)
@@ -54,7 +55,6 @@ function autoFunc(themeMenu){
 
 function disableThemeAuto(){
     document.querySelector(".theme-check").classList.add("hide-check")
-    console.log("fart");
 
 }
 
@@ -124,7 +124,7 @@ function sliderFunc(themeMenu){
         hideDisp()
         formatForTheme(thumbTimeDisp.innerText)
     }
-    
+    let prevDrag;
     function drag(e){
         if (!isDragging) return;
         e.preventDefault();
@@ -141,8 +141,14 @@ function sliderFunc(themeMenu){
         thumb.style.top = `${newY}px`;
         offsetY = currentY;
         const percentage = Math.floor((((maxThumbY - newY)/maxThumbY)*100));
-        const twentyFour = Math.floor((23*percentage)/100);
+        const finalVal = Math.floor((23*percentage)/100);
         showDisp()
+        if(prevDrag!==undefined){
+            if(finalVal!==prevDrag){
+                changeTheme()
+            }
+        }
+        prevDrag = finalVal;
     }
 }
 
@@ -167,5 +173,9 @@ function formatForTheme(val){
         if(val.includes("pm")) val = parseInt(val) + 12;
         else val = parseInt(val)
     }
-    changeTheme(val)
+    changeThemeStorage(val)
+}
+
+function changeTheme(){
+    
 }

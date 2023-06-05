@@ -12,7 +12,7 @@ export function changeCityChoice(choice){
 // 
 export let themeChoice = false
 
-export function changeTheme(val){
+export function changeThemeStorage(val){
     themeChoice = val;
     localStorage.setItem("theme-time", val)
 }
