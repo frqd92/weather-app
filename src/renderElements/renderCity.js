@@ -4,7 +4,7 @@ import '/src/renderElements/cityHeader.css'
 import '/src/renderElements/currentWeather.css'
 import '/src/renderElements/contentBox.css'
 import bookmark from '/src/assets/bookmark.svg'
-import { findSliderPosition } from "./theme";
+import { changeTheme } from "./theme";
 
 export async function fetchData(location){
     const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=063e821e951a4786b2d121448231605&q=${location}&days=7`;
@@ -15,7 +15,12 @@ export async function fetchData(location){
         displayLoader(false)
         renderCity(weatherData)
         changeCityChoice(location)
-        findSliderPosition()
+        if(localStorage.getItem("theme-time")===null){
+            changeTheme(document.querySelector(".time-cont p").innerText);
+        }
+        else{
+            changeTheme(localStorage.getItem("theme-time"))
+        }
    }
    catch (error){
         fetchData(localStorage.getItem("city-choice"));

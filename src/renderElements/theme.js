@@ -3,24 +3,30 @@ import { elementCreator, imageCreator } from "../utils/elementCreator";
 import { followMouseHoverText } from "../utils/followMouse";
 import themeIcon from '/src/assets/theme.png'
 import '/src/styles/themePick.css'
-let chosenTheme = false;
-let themeDragPos;
+
 export function themeFunc(){
     const themeCont = document.getElementById("theme-container");
     const themeImg = imageCreator(themeIcon, ["id", "theme-icon"], themeCont)
     const themeMenu = elementCreator("div", ["class", "theme-menu"], false, themeCont)
     followMouseHoverText(themeImg, "Background")
-
     autoFunc(themeMenu)
     sliderFunc(themeMenu)
 
+
+    
     themeImg.addEventListener("click", ()=>{
         if(document.querySelector(".city-info-cont")===null) return
         if(!themeMenu.className.includes("theme-menu-show")){
             themeMenu.classList.add("theme-menu-show");
             setTimeout(()=>{
-                findSliderPosition();
+                if(localStorage.getItem("theme-time")===null){
+                    findSliderPosition();
+                }
+                else{
+                    findSliderPosition(Number(localStorage.getItem("theme-time"))+1);
+                }
             }, 165)
+            
         }
         else{
             themeMenu.classList.remove("theme-menu-show");
@@ -35,15 +41,17 @@ function autoFunc(themeMenu){
     const innerCheck = elementCreator("span", ["class", "theme-check"], "✓", checkDiv);
 
     if(localStorage.getItem("theme-time")!==null){
-        innerCheck.classList.add("hide-check")
+        innerCheck.classList.add("hide-check");
+    }
+    else{
+        
+
     }
     autoDiv.addEventListener("click", autoSelect)
 
     function autoSelect(){
         if(!innerCheck.className.includes("hide-check")){
             innerCheck.classList.add("hide-check");
-            chosenTheme = false;
-
         }
         else{
             innerCheck.classList.remove("hide-check");
@@ -118,11 +126,15 @@ function sliderFunc(themeMenu){
         thumb.style.cursor = 'grabbing';
     }
     
-    function stopDragging(){
+    function stopDragging(e){
+        if(!e.target.closest(".slider-cont")) return
+        console.log("shart");
         isDragging = false;
         thumb.style.cursor = 'grab';
         hideDisp()
-        formatForTheme(thumbTimeDisp.innerText)
+        const val = formatForTheme(thumbTimeDisp.innerText)
+        changeThemeStorage(val)
+
     }
     let prevDrag;
     function drag(e){
@@ -145,14 +157,15 @@ function sliderFunc(themeMenu){
         showDisp()
         if(prevDrag!==undefined){
             if(finalVal!==prevDrag){
-                changeTheme()
+                changeTheme(document.querySelector(".slider-time-disp").innerText)
+
             }
         }
         prevDrag = finalVal;
     }
 }
 
-export function findSliderPosition(){
+export function findSliderPosition(val){
     const pageTime = Number(document.querySelector(".time-cont p").innerText)+1;
     const thumb = document.querySelector(".slider-thumb");
     const sliderCont = document.querySelector(".slider-cont");
@@ -160,7 +173,8 @@ export function findSliderPosition(){
     const sliderContTop = parseInt(getComputedStyle(sliderCont).height)
     const maxThumbHeight = sliderContTop- thumbHeight;
     const thumbTop = parseInt(getComputedStyle(thumb).top)
-    const sliderPos = (maxThumbHeight*pageTime)/23
+    let time = !val ? pageTime : val;
+    const sliderPos = (maxThumbHeight*time)/23
     thumb.style.top = sliderPos + "px";
 }
 
@@ -173,9 +187,13 @@ function formatForTheme(val){
         if(val.includes("pm")) val = parseInt(val) + 12;
         else val = parseInt(val)
     }
-    changeThemeStorage(val)
+    return val
 }
 
-function changeTheme(){
-    
+export function changeTheme(val){
+    val = formatForTheme(val)
+    if(document.body.classList.length>0){
+        document.body.classList.remove(document.body.classList[0])
+    }
+    document.body.classList.add(`sky-gradient-${val}`)
 }
