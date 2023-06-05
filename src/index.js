@@ -4,12 +4,10 @@ import '/src/main.css'
 import '/src/styles/header.css'
 import '/src/assets/fonts/fonts.css'
 import { fetchData } from './renderElements/renderCity';
-import { elementCreator } from './utils/elementCreator';
+import { elementCreator} from './utils/elementCreator';
 import { followMouseHoverText } from './utils/followMouse';
 import { bookmarkArr, equateBookmark, readBookmarked, writeBookmarked } from './state';
-
-
-
+import { themeFunc } from './renderElements/theme';
 
 
 (()=>{
@@ -18,6 +16,7 @@ import { bookmarkArr, equateBookmark, readBookmarked, writeBookmarked } from './
     checkMenus();
     checkCityLocalStorage();
     bookmarkHeaderFunc();
+    themeFunc()
     const mainData = elementCreator("main", false, false, document.body);
 
 })();
@@ -83,7 +82,6 @@ function bookmarkHeaderFunc(){
         }
     }
 
-
     function hideFromOut(e){
         if(!e.target.closest("#bookmark-menu-container")){
             menu.classList.remove("bookmark-menu-show");
@@ -94,7 +92,6 @@ function bookmarkHeaderFunc(){
 
 
 }
-
 
 
 function checkCityLocalStorage(){
@@ -115,3 +112,4 @@ function checkMenus(){
         }
     })
 }
+

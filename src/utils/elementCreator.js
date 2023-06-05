@@ -30,7 +30,7 @@ export function elementCreator(type, selector,text, parent, isPrepend, placehold
     return element;
 }
 
-export function imageCreator(source, selector, parent){
+export function imageCreator(source, selector, parent, isPrepend){
     const img = document.createElement("img");
     img.src = source;
     if(selector){
@@ -43,7 +43,12 @@ export function imageCreator(source, selector, parent){
         }
     }
     if(parent){
-        parent.appendChild(img)
+        if(isPrepend){
+            parent.prepend(img)
+        }
+        else{
+            parent.appendChild(img)
+        }
     }
     return img;
 }
