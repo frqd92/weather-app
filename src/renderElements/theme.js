@@ -11,12 +11,11 @@ export function themeFunc(){
     followMouseHoverText(themeImg, "Background")
     autoFunc(themeMenu)
     sliderFunc(themeMenu)
-
-
     
     themeImg.addEventListener("click", ()=>{
         if(document.querySelector(".city-info-cont")===null) return
         if(!themeMenu.className.includes("theme-menu-show")){
+            document.addEventListener("click", hideMenuDoc)
             themeMenu.classList.add("theme-menu-show");
             setTimeout(()=>{
                 if(localStorage.getItem("theme-time")===null){
@@ -29,11 +28,21 @@ export function themeFunc(){
             
         }
         else{
+            document.removeEventListener("click", hideMenuDoc)
+
             themeMenu.classList.remove("theme-menu-show");
         }
     })
+    function hideMenuDoc(e){
+        if(!e.target.closest("#theme-container")){
+            themeMenu.classList.remove("theme-menu-show");
+            document.removeEventListener("click", hideMenuDoc)
 
+        }
+    }
 }
+
+
 function autoFunc(themeMenu){
     const autoDiv = elementCreator("div", ["class", "theme-auto"], false, themeMenu);
     const label = elementCreator("span", false, "AUTO", autoDiv)
@@ -43,10 +52,7 @@ function autoFunc(themeMenu){
     if(localStorage.getItem("theme-time")!==null){
         innerCheck.classList.add("hide-check");
     }
-    else{
-        
 
-    }
     autoDiv.addEventListener("click", autoSelect)
 
     function autoSelect(){
@@ -56,6 +62,9 @@ function autoFunc(themeMenu){
         else{
             innerCheck.classList.remove("hide-check");
             findSliderPosition()
+            changeTheme(document.querySelector(".time-cont p").innerText)
+            localStorage.removeItem("theme-time")
+
         }
     }
 }
@@ -84,11 +93,9 @@ function sliderFunc(themeMenu){
     function moveThumbCont(e){
         disableThemeAuto()
         if(e.target===thumb) return;
-        const sliderTop = sliderCont.getBoundingClientRect().top
+        const sliderTop = sliderCont.getBoundingClientRect().top;
         let pos = Math.floor(e.clientY - sliderTop);
-        thumb.style.top = pos + "px"
-
-
+        thumb.style.top = pos + "px";
     }
     function showDisp(){
         if(!thumbTimeDisp.className.includes("slider-time-disp-show")){
@@ -128,13 +135,14 @@ function sliderFunc(themeMenu){
     
     function stopDragging(e){
         if(!e.target.closest(".slider-cont")) return
-        console.log("shart");
         isDragging = false;
         thumb.style.cursor = 'grab';
         hideDisp()
         const val = formatForTheme(thumbTimeDisp.innerText)
         changeThemeStorage(val)
+        changeTheme(document.querySelector(".slider-time-disp").innerText);
 
+    
     }
     let prevDrag;
     function drag(e){

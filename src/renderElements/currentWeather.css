@@ -3,7 +3,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+    padding-top: 15px;
+    background-color: rgba(255, 255, 255, 0.6);
+
 }
 
 
@@ -13,15 +17,16 @@
 .current-weather-cont{
     display: flex;
     justify-content: center;
-
+    background-color: rgba(255, 255, 255, 0.729);
+    padding-right:25px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
 }
 .current-weather-div img{
     width: 100px;
     opacity: 0.5;
-    left: -70px;
-    top: 0;
-    
+    justify-self: start;
 }
 .current-weather-part{
     display: grid;

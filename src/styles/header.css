@@ -3,8 +3,8 @@ header{
     align-items: center;
     grid-template-columns: 1fr 5fr 1fr 1fr;
     height: 50px;
-
-
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0px 0px 10px 10px;
 }
 
 
@@ -127,15 +127,15 @@ header{
 }
 #search-input{
     text-align: center;
-    border: 1px solid rgba(0, 0, 0, 0);
-    border-bottom: 1px solid rgb(0, 0, 0) ;
+    border: 1px solid rgb(0, 0, 0, 0.5);
     outline: none;
     font-size: 1.1rem;
     min-width: 200px;
-    padding: 5px 0px;
-    padding-top: 15px;
+    padding: 10px;
     width: 100%;
     background: none;
+    border-radius: 10px 10px 0px 0px;
+    background-color: rgba(255, 255, 255, 0.604);
 }
 
 .input-error-div{

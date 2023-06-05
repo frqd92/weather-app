@@ -16,8 +16,8 @@
     max-height: 0px;
     transition: 0.15s ease-in-out max-height;
     border-radius: 5px;
-    border: 1px solid black;
     overflow: hidden;
+    background-color: white;
 }
 
 .theme-menu-show{
@@ -25,7 +25,7 @@
     display: grid;
     grid-template-rows: 45px 1fr;
     overflow:visible;
-
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .theme-auto{
 
@@ -160,5 +160,5 @@ body{
 .sky-gradient-19 { background: linear-gradient(to bottom, #163C52 0%,#4F4F47 30%,#C5752D 60%,#B7490F 80%, #2F1107 100%); }
 .sky-gradient-20 { background: linear-gradient(to bottom, #071B26 0%,#071B26 30%,#8A3B12 80%,#240E03 100%); }
 .sky-gradient-21 { background: linear-gradient(to bottom, #010A10 30%,#59230B 80%,#2F1107 100%); }
-.sky-gradient-22 { background: linear-gradient(to bottom, #090401 50%,#4B1D06 100%); }
-.sky-gradient-23 { background: linear-gradient(to bottom, #00000c 80%,#150800 100%); }
+.sky-gradient-22 { background: linear-gradient(to bottom, #020111 70%,#191621 80%) }
+.sky-gradient-23 { background: linear-gradient(to bottom, #020111 85%,#191621 90%)}
