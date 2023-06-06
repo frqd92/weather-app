@@ -7,6 +7,12 @@
 #theme-icon{
     width: 45px;
     cursor: pointer;
+    transition: transform 0.3s linear;
+ 
+}
+#theme-icon:hover{
+
+    transform: scale(1.1);
 }
 
 .theme-menu{

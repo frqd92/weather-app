@@ -12,6 +12,7 @@ export async function fetchData(location){
         displayLoader(true)
         const weatherApi = await fetch(apiUrl);
         const weatherData = await weatherApi.json();
+
         displayLoader(false)
         renderCity(weatherData)
         changeCityChoice(location)
@@ -21,6 +22,7 @@ export async function fetchData(location){
         else{
             changeTheme(localStorage.getItem("theme-time"))
         }
+
    }
    catch (error){
         fetchData(localStorage.getItem("city-choice"));

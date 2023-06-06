@@ -29,7 +29,6 @@ export function themeFunc(){
         }
         else{
             document.removeEventListener("click", hideMenuDoc)
-
             themeMenu.classList.remove("theme-menu-show");
         }
     })
